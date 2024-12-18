@@ -1,35 +1,45 @@
 <script setup>
 import axios from "axios";
-import Header from "../../components/Header.vue";
-import Footer from "../../components/Footer.vue";
+import { ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
-import { useStore } from "../store";
+import { useStore } from "../src/store";
 
 const router = useRouter();
 const store = useStore();
+const props = defineProps(["genres"]);
+const selectedGenre = ref(28);
+const response = ref(null);
 
-const response = await axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}`);
+async function getMovieByGenre() {
+  response.value = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&with_genres=${selectedGenre.value}`);
+}
 
 function getMovieDetails(id) {
-  router.push(`/movies/${id}`);
+  router.push(`/movies/${id}`)
 }
+
+onMounted(async () => {
+  response.value = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&with_genres=${selectedGenre.value}`);
+})
 </script>
 
 <template>
   <Header />
   <div class="movie-gallery">
-    <h1>Now Playing</h1>
-    <div class="movie-list">
+    <h1>Search By Genre</h1>
+    <select v-model="selectedGenre" @change="getMovieByGenre()">
+      <option v-for="genre of genres" :value="genre.id">{{ genre.genreName }}</option>
+    </select>
+    <div v-if="response" class="movie-list">
       <div v-for="movie in response.data.results" :key="movie.id" class="movie-card">
         <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="Movie Poster" class="movie-poster" />
         <p class="movie-title">{{ movie.title }}</p>
         <button class="button" @click="getMovieDetails(movie.id)">Details</button>
-        <button @click="store.cart.set(movie.id, { title: movie.title, url: movie.poster_path })"
-          class="button">{{ store.cart.has(movie.id) ? 'Added' : 'Buy' }}</button>
+        <button @click="store.cart.set(movie.id, { title: movie.title, url: movie.poster_path })" class="button">{{
+          store.cart.has(movie.id) ? 'Added' : 'Buy' }}</button>
       </div>
     </div>
   </div>
-  <Footer />
 </template>
 
 <style scoped>
@@ -46,6 +56,23 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+select {
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #555;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 200px;
+}
+
+select:focus {
+  outline: none;
+  border-color: #888;
+  background-color: #444;
 }
 
 .movie-list {
