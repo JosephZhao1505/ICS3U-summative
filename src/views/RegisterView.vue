@@ -40,9 +40,9 @@ const handleSignup = () => {
   <div class="form-container">
     <h2>Make An Account</h2>
     <form @submit.prevent="handleSignup">
-      <input v-model="firstName" placeholder="First Name" class="input-field" required />
-      <input v-model="lastName" placeholder="Last Name" class="input-field" required />
-      <input v-model="email" placeholder="Email" class="input-field" required />
+      <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field" required />
+      <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" required />
+      <input v-model="email" maxlength="100" placeholder="Email" class="input-field" required />
       <input v-model="password" type="password" placeholder="Password" class="input-field" required />
       <input v-model="retypepassword" type="password" placeholder="Retype Password" class="input-field" required />
       <button type="submit" class="button signin">Sign Up</button>

@@ -34,7 +34,9 @@ function logoutButton() {
     </div>
     <div class="right">
       <template v-if="store.email !== null">
-        <RouterLink to="/cart" class="button">Cart</RouterLink>
+        <RouterLink to="/cart" class="logo" >
+          <img src="/cartuh.png" alt="Cart">
+        </RouterLink>
         <RouterLink to="/settings" class="button">Settings</RouterLink>
         <RouterLink @click="logoutButton" to="/" class="button">Logout</RouterLink>
       </template>
