@@ -16,16 +16,22 @@ function logoutButton() {
   <div class="topbar">
     <div class="left">
       <div v-if="store.email !== null" class="viewsdropdown">
-        <button class="button">Menu</button>
+        <RouterLink class="buttons">
+          <img src="/menuh.png" alt="Menu">
+        </RouterLink>
         <div class="views">
-          <RouterLink to="/home"><button class="button">Home</button></RouterLink>
-          <RouterLink to="/genresearch"><button class="button">Genres</button></RouterLink>
+          <RouterLink to="/home" class="buttons">
+            <img src="/homeuh.png" alt="Home">
+          </RouterLink>
+          <RouterLink to="/genresearch" class = "buttons">
+            <img src="/imsorryuh.png" alt="Genres">
+          </RouterLink>
         </div>
       </div>
-      <RouterLink v-if="store.email === null" to="/" class="logo">
+      <RouterLink v-if="store.email === null" to="/" class="buttons">
         <img src="/sitelogo.png" alt="BrokeFlix Logo">
       </RouterLink>
-      <RouterLink v-else to="/home" class="logo">
+      <RouterLink v-else to="/home" class="buttons">
         <img src="/sitelogo.png" alt="BrokeFlix Logo">
       </RouterLink>
       <div class="greeting">
@@ -34,24 +40,34 @@ function logoutButton() {
     </div>
     <div class="right">
       <template v-if="store.email !== null">
-        <RouterLink to="/cart" class="logo" >
+        <RouterLink to="/cart" class="buttons" >
           <img src="/cartuh.png" alt="Cart">
         </RouterLink>
-        <RouterLink to="/settings" class="button">Settings</RouterLink>
-        <RouterLink @click="logoutButton" to="/" class="button">Logout</RouterLink>
+        <RouterLink to="/settings" class="buttons">
+          <img src="/gearuh.png" alt="Settings">
+        </RouterLink>
+        <RouterLink @click="logoutButton" to="/" class="buttons">
+          <img src="/logoutuh.png" alt="Logout">
+        </RouterLink>
       </template>
       <template v-else>
-        <RouterLink to="/login" class="button">Log In</RouterLink>
+        <RouterLink to="/login" class="buttons">
+          <img src="/signinuh.png" alt="Login">
+        </RouterLink>
       </template>
     </div>
   </div>
 </template>
 
 <style scoped>
-.logo img {
+.buttons img {
   height: 50px;
   background-color: gray;
   border-radius: 5px;
+}
+
+.buttons img:hover {
+  background-color: #cc5140;
 }
 
 .topbar {
