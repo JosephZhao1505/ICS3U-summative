@@ -8,12 +8,21 @@ import { RouterLink } from 'vue-router';
     <h1>Unlimited content whenever and wherever</h1>
     <h2>Bank account look like this? No problem! Join now to start watching your favourite content with as many pixels
       as . Prices start at $6.99.</h2>
-    <RouterLink to="/register" class="button">Get Started</RouterLink>
+      <h1>Get Started</h1>
+    <RouterLink to="/register" class="signup">
+      <img src="/signupuh.png" alt="Sign Up">
+    </RouterLink>
     <h3>Cancel after 10 lifetimes</h3>
-    </div>
+  </div>
 </template>
 
 <style scoped>
+.signup img {
+  height: 50px;
+  background-color: gray;
+  border-radius: 5px;
+}
+
 div {
   display: flex;
   flex-direction: column;
@@ -34,7 +43,9 @@ div {
   max-height: 60vh;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 10px 0;
 }
 

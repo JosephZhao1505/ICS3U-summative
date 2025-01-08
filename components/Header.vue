@@ -52,7 +52,7 @@ function logoutButton() {
       </template>
       <template v-else>
         <RouterLink to="/login" class="buttons">
-          <img src="/signinuh.png" alt="Login">
+          <img src="/signupuh.png" alt="Login">
         </RouterLink>
       </template>
     </div>
