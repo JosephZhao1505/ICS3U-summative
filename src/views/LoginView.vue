@@ -1,8 +1,11 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router';
+import { useStore } from '@/store';
 import { ref } from 'vue';
 
+const store = useStore();
 const router = useRouter();
+const email = ref('');
 const password = ref('');
 
 const handleLogin = () => {
@@ -10,6 +13,27 @@ const handleLogin = () => {
     router.push("/home");
   } else {
     alert("Invalid Password");
+  }
+};
+
+const loginByEmail = async () => {
+  try {
+    const user = (await signInWithEmailAndPassword(auth, email.value, password.value)).user;
+    store.user = user;
+    router.push("/movies/all");
+  } catch (error) {
+    console.log(error);
+    alert("There was an error signing in with email!");
+  }
+};
+
+const loginByGoogle = async () => {
+  try {
+    const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+    store.user = user;
+    router.push("/movies/all");
+  } catch (error) {
+    alert("There was an error signing in with Google!");
   }
 };
 </script>
@@ -28,6 +52,7 @@ const handleLogin = () => {
       <input v-model:="password" type="password" placeholder="Password" class="input-field" required />
       <button type="submit" class="button login">Login</button>
     </form>
+    <button @click="loginByGoogle()" type="submit" class="button login">Login by Google</button>
   </div>
   <RouterLink to="/" class="cancelbutton">Cancel</RouterLink>
 </template>

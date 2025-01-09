@@ -18,7 +18,7 @@ import { RouterLink } from 'vue-router';
 
 <style scoped>
 .signup img {
-  height: 50px;
+  height: 100px;
   background-color: gray;
   border-radius: 5px;
 }

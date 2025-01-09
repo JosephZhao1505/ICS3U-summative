@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '../store';
-import Footer from '../../components/Footer.vue';
+import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const router = useRouter();
 const store = useStore();
@@ -12,19 +12,26 @@ const firstName = ref('');
 const lastName = ref('');
 const email = ref('');
 
-
-const handleSignup = () => {
-  if (password.value !== retypepassword.value) {
-    alert('Passwords do not match.');
-    return;
-  } else {
-    store.firstName = firstName.value
-    store.lastName = lastName.value
-    store.email = email.value
-    store.password = password.value
-    router.push('/home');
+async function registerByEmail() {
+  try {
+    const user = (await createUserWithEmailAndPassword(auth, email.value, password.value)).user;
+    await updateProfile(user, { displayName: `${firstName.value} ${lastName.value}` });
+    store.user = user;
+    router.push("/home");
+  } catch (error) {
+    alert("There was an error creating a user with email!");
   }
-};
+}
+
+async function registerByGoogle() {
+  try {
+    const user = (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+    store.user = user;
+    router.push("/home");
+  } catch (error) {
+    alert("There was an error creating a user with Google!");
+  }
+}
 </script>
 
 <template>
@@ -39,7 +46,7 @@ const handleSignup = () => {
 
   <div class="form-container">
     <h2>Make An Account</h2>
-    <form @submit.prevent="handleSignup">
+    <form @submit.prevent="registerByEmail">
       <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field" required />
       <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" required />
       <input v-model="email" maxlength="100" placeholder="Email" class="input-field" required />
@@ -47,6 +54,7 @@ const handleSignup = () => {
       <input v-model="retypepassword" type="password" placeholder="Retype Password" class="input-field" required />
       <button type="submit" class="button signin">Sign Up</button>
     </form>
+    <button @click="registerByGoogle()" class="button register">Register by Google</button>
   </div>
   <RouterLink to="/" class="cancelbutton">Cancel</RouterLink>
 </template>

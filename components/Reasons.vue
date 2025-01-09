@@ -2,8 +2,7 @@
     <div class="ReasonsToJoin">
     <div class="Reasons">
       <h2>Unbeatable prices</h2>
-      <p>Starting at just $6.99 a year you can have access to millions of movies, TV shows and more! That's 1.9 cents a
-        day!</p>
+      <p>You can have access to millions of movies, TV shows and more!</p>
     </div>
     <div class="Reasons">
       <h2>Downloading content is extremely storage friendly</h2>
