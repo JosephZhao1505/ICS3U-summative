@@ -7,6 +7,11 @@ import Header from "../../components/Header.vue";
 const route = useRoute();
 const store = useStore();
 
+const addToCart = () => {
+  store.cart.set(route.params.id, { title: response.data.original_title, url: response.data.poster_path })
+  localStorage.setItem(`cart_${store.user.email}`, JSON.stringify(Object.fromEntries(store.cart)));
+}
+
 const response = await axios.get(`https://api.themoviedb.org/3/movie/${route.params.id}?api_key=${import.meta.env.VITE_TMDB_KEY}&append_to_response=videos`);
 console.log(response.data);
 
@@ -34,7 +39,7 @@ console.log(response.data);
           <a :href="response.data.homepage" target="_blank">
             <button class="button">Official Movie Site</button>
           </a>
-          <button @click="store.cart.set(response.data.id, { title: response.data.original_title, url: response.data.poster_path })" class="button">{{ store.cart.has(route.params.id) ? 'Added' : 'Buy' }}</button>
+          <button @click="addToCart()" class="button">{{ store.cart.has(route.params.id) ? 'Added' : 'Buy' }}</button>
         </div>
       </div>
     </div>

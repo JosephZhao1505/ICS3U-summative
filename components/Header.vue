@@ -1,21 +1,22 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { useStore } from "../src/store";
+import { signOut } from "firebase/auth";
+import { auth } from "@/firebase";
 
 const store = useStore();
 
-function logoutButton() {
-  store.email = null;
-  store.firstName = null;
-  store.lastName = null;
-  store.password = null;
+const logout = () => {
+  store.user = null;
+  signOut(auth);
+  router.push(`/`);
 }
 </script>
 
 <template>
   <div class="topbar">
     <div class="left">
-      <div v-if="store.email !== null" class="viewsdropdown">
+      <div v-if="store.user !== null" class="viewsdropdown">
         <RouterLink class="buttons">
           <img src="/menuh.png" alt="Menu">
         </RouterLink>
@@ -28,25 +29,25 @@ function logoutButton() {
           </RouterLink>
         </div>
       </div>
-      <RouterLink v-if="store.email === null" to="/" class="buttons">
+      <RouterLink v-if="store.user === null" to="/" class="buttons">
         <img src="/sitelogo.png" alt="BrokeFlix Logo">
       </RouterLink>
       <RouterLink v-else to="/home" class="buttons">
         <img src="/sitelogo.png" alt="BrokeFlix Logo">
       </RouterLink>
       <div class="greeting">
-        <h1 v-if="store.email !== null">Hello {{ store.firstName }} {{ store.lastName }}!</h1>
+        <h1 v-if="store.user !== null">Hello {{ store.firstName }} {{ store.lastName }}!</h1>
       </div>
     </div>
     <div class="right">
-      <template v-if="store.email !== null">
+      <template v-if="store.user !== null">
         <RouterLink to="/cart" class="buttons" >
           <img src="/cartuh.png" alt="Cart">
         </RouterLink>
         <RouterLink to="/settings" class="buttons">
           <img src="/gearuh.png" alt="Settings">
         </RouterLink>
-        <RouterLink @click="logoutButton" to="/" class="buttons">
+        <RouterLink @click="logout()" to="/" class="buttons">
           <img src="/logoutuh.png" alt="Logout">
         </RouterLink>
       </template>

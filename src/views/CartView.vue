@@ -1,8 +1,14 @@
 <script setup>
 import Header from '../../components/Header.vue';
 import { useStore } from '../store';
+import { ref } from 'vue';
 
 const store = useStore();
+
+const removeFromCart = (key) => {
+  store.cart.delete(key);
+  localStorage.setItem(`cart_${store.user.email}`, JSON.stringify(Object.fromEntries(store.cart)));
+};
 </script>
 
 <template>
@@ -13,7 +19,7 @@ const store = useStore();
             <div v-for="([key, value]) in store.cart" :key="key" class="item-card">
                 <img :src="`https://image.tmdb.org/t/p/w500${value.url}`" class="item-poster" />
                 <h2 class="item-title">{{ value.title }}</h2>
-                <button class="button remove-button" @click="store.cart.delete(key)">Remove</button>
+                <button class="button remove-button" @click="removeFromCart(key)">Remove</button>
             </div>
         </div>
     </div>

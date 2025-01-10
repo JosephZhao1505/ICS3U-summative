@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '../store';
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from '@/firebase';
 
 const router = useRouter();
 const store = useStore();
@@ -46,7 +47,7 @@ async function registerByGoogle() {
 
   <div class="form-container">
     <h2>Make An Account</h2>
-    <form @submit.prevent="registerByEmail">
+    <form @submit.prevent="registerByEmail()">
       <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field" required />
       <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" required />
       <input v-model="email" maxlength="100" placeholder="Email" class="input-field" required />
