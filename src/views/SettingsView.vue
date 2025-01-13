@@ -18,7 +18,7 @@ const updateInfo = () => {
     <Header />
     <div class="form-container">
         <form @submit.prevent="updateInfo">
-            <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field" required/>
+            <input v-model="firstName"         placeholder="First Name" class="input-field" required/>
             <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" required/>
             <button type="submit" class="button">Change</button>
         </form>

@@ -6,8 +6,8 @@ import { ref } from 'vue';
 const store = useStore();
 
 const removeFromCart = (key) => {
-  store.cart.delete(key);
-  localStorage.setItem(`cart_${store.user.email}`, JSON.stringify(Object.fromEntries(store.cart)));
+    store.cart.delete(key);
+    localStorage.setItem(`cart_${store.user.email}`, JSON.stringify(Object.fromEntries(store.cart)));
 };
 </script>
 
