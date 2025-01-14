@@ -1,16 +1,17 @@
 <script setup>
+import { auth } from "@/firebase";
+import { updateProfile, updatePassword } from "firebase/auth";
 import Header from "../../components/Header.vue";
 import { useStore } from "../store";
 import { ref } from 'vue';
+import { getActivePinia } from "pinia";
+import { getAuth } from "firebase/auth";
 
 const store = useStore();
-const firstName = ref('');
-const lastName = ref('');
-const securePass = ref('')
+let[firstName, lastName] = auth.currentUser.displayName.split(' ')
 
 const updateInfo = () => {
-    store.firstName = firstName.value;
-    store.lastName = lastName.value;
+  
 };
 </script>
 
@@ -18,17 +19,17 @@ const updateInfo = () => {
     <Header />
     <div class="form-container">
         <form @submit.prevent="updateInfo">
-            <input v-model="firstName"         placeholder="First Name" class="input-field" required/>
-            <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" required/>
+            <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field"/>
+            <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" />
             <button type="submit" class="button">Change</button>
         </form>
     </div>
     <div class="currentinfo">
         <h2>Current Info</h2>
-        <p>First Name: {{ store.firstName }}</p>
-        <p>Last Name: {{ store.lastName }}</p>
-        <p>Email: {{ store.email }}</p>
-        <p>Password: *****</p>
+        <p>First Name: {{ firstName }}</p>
+        <p>Last Name: {{ lastName }}</p>
+        <p>Email: {{ auth.currentUser.email }}</p>
+        <p>Password: **********</p>
     </div>
 </template>
 

@@ -14,7 +14,7 @@ function getMovieDetails(id) {
   router.push(`/movies/${id}`);
 }
 
-const addToCart = () => {
+const addToCart = (movie) => {
   store.cart.set(movie.id, { title: movie.title, url: movie.poster_path })
   localStorage.setItem(`cart_${store.user.email}`, JSON.stringify(Object.fromEntries(store.cart)));
 }
@@ -29,7 +29,7 @@ const addToCart = () => {
         <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="Movie Poster" class="movie-poster" />
         <p class="movie-title">{{ movie.title }}</p>
         <button class="button" @click="getMovieDetails(movie.id)">Details</button>
-        <button @click="addToCart()" class="button">{{ store.cart.has(movie.id) ? 'Added' : 'Buy' }}</button>
+        <button @click="addToCart(movie)" class="button">{{ store.cart.has(movie.id) ? 'Added' : 'Buy' }}</button>
       </div>
     </div>
   </div>

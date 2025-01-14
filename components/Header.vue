@@ -5,6 +5,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/firebase";
 
 const store = useStore();
+let[firstName, lastName] = auth.currentUser.displayName.split(' ')
 
 const logout = () => {
   store.user = null;
@@ -36,7 +37,7 @@ const logout = () => {
         <img src="/sitelogo.png" alt="BrokeFlix Logo">
       </RouterLink>
       <div class="greeting">
-        <h1 v-if="store.user !== null">Hello {{ store.firstName }} {{ store.lastName }}!</h1>
+        <h1 v-if="store.user !== null">Hello {{ firstName }} {{ lastName }}!</h1>
       </div>
     </div>
     <div class="right">

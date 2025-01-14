@@ -14,13 +14,18 @@ const lastName = ref('');
 const email = ref('');
 
 async function registerByEmail() {
-  try {
-    const user = (await createUserWithEmailAndPassword(auth, email.value, password.value)).user;
-    await updateProfile(user, { displayName: `${firstName.value} ${lastName.value}` });
-    store.user = user;
-    router.push("/home");
-  } catch (error) {
-    alert("There was an error creating a user with email!");
+  if (password.value !== retypepassword.value) {
+    alert('Passwords do not match.');
+    return;
+  } else {
+    try {
+      const user = (await createUserWithEmailAndPassword(auth, email.value, password.value)).user;
+      await updateProfile(user, { displayName: `${firstName.value} ${lastName.value}` });
+      store.user = user;
+      router.push("/home");
+    } catch (error) {
+      alert("There was an error creating a user with email!");
+    }
   }
 }
 
@@ -48,7 +53,7 @@ async function registerByGoogle() {
   <div class="form-container">
     <h2>Make An Account</h2>
     <form @submit.prevent="registerByEmail()">
-      <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field" required />
+      <input v-model="firstName"  maxlength="20" placeholder="First Name" class="input-field" required />
       <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" required />
       <input v-model="email" maxlength="100" placeholder="Email" class="input-field" required />
       <input v-model="password" type="password" placeholder="Password" class="input-field" required />
