@@ -4,33 +4,43 @@ import { updateProfile, updatePassword } from "firebase/auth";
 import Header from "../../components/Header.vue";
 import { useStore } from "../store";
 import { ref } from 'vue';
-import { getActivePinia } from "pinia";
-import { getAuth } from "firebase/auth";
 
 const store = useStore();
-let[firstName, lastName] = auth.currentUser.displayName.split(' ')
 
-const updateInfo = () => {
-  
+const firstName = ref(auth.currentUser.displayName.split(' ')[0] || '');
+const lastName = ref(auth.currentUser.displayName.split(' ')[1] || '');
+
+const updateInfo = async () => {
+  try {
+    await updateProfile(auth.currentUser, {
+      displayName: `${firstName.value} ${lastName.value}`
+    });
+
+    alert('Information updated successfully!');
+  } catch (error) {
+    console.error('Error updating profile: ', error);
+    alert('Failed to update information.');
+  }
 };
 </script>
 
 <template>
-    <Header />
-    <div class="form-container">
-        <form @submit.prevent="updateInfo">
-            <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field"/>
-            <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" />
-            <button type="submit" class="button">Change</button>
-        </form>
-    </div>
-    <div class="currentinfo">
-        <h2>Current Info</h2>
-        <p>First Name: {{ firstName }}</p>
-        <p>Last Name: {{ lastName }}</p>
-        <p>Email: {{ auth.currentUser.email }}</p>
-        <p>Password: **********</p>
-    </div>
+  <Header />
+  <div class="form-container">
+    <form @click="updateInfo">
+      <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field" />
+      <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" />
+      <button type="submit" class="button">Change</button>
+    </form>
+  </div>
+
+  <div class="currentinfo">
+    <h2>Current Info</h2>
+    <p>First Name: {{ firstName }}</p>
+    <p>Last Name: {{ lastName }}</p>
+    <p>Email: {{ auth.currentUser.email }}</p>
+    <p>Password: **********</p>
+  </div>
 </template>
 
 <style scoped>
@@ -107,6 +117,6 @@ button:hover {
 }
 
 .security {
-    visibility: hidden;
+  visibility: hidden;
 }
 </style>

@@ -14,17 +14,17 @@ import ErrorView from '@/views/ErrorView.vue';
 import { userAuthorized, useStore } from '../store';
 
 const routes = [
-    { path: '/', component: LandingPage },
-    { path: '/register', component: RegisterView },
-    { path: '/login', component: LoginView },
-    { path: '/home', component: HomeView },
-    { path: '/genresearch', component: GenreSearch },
-    { path: '/movies/:id', component: DetailView },
-    { path: '/cart', component: CartView },
-    { path: '/tos', component: TOSView },
-    { path: '/privacypolicy', component: PrivacyPolicyView },
-    { path: '/contactus', component: ContactUsView },
-    { path: '/settings', component: SettingsView },
+    { path: '/', meta: { auth: false }, component: LandingPage },
+    { path: '/register', meta: { auth: false }, component: RegisterView },
+    { path: '/login', meta: { auth: false }, component: LoginView },
+    { path: '/home', meta: { auth: true }, component: HomeView },
+    { path: '/genresearch', meta: { auth: true }, component: GenreSearch },
+    { path: '/movies/:id', meta: { auth: true }, component: DetailView },
+    { path: '/cart', meta: { auth: true }, component: CartView },
+    { path: '/tos', meta: { auth: false }, component: TOSView },
+    { path: '/privacypolicy', meta: { auth: false }, component: PrivacyPolicyView },
+    { path: '/contactus', meta: { auth: false }, component: ContactUsView },
+    { path: '/settings', meta: { auth: false }, component: SettingsView },
     { path: '/:pathMatch(.*)*', meta: { auth: false }, component: ErrorView, },
 ]
 
@@ -33,16 +33,21 @@ const router = createRouter({
     routes,
 })
 
-router.beforeEach((to, from, next) => {
-    userAuthorized.then(() => {
-      const store = useStore();
-  
-      if (!store.user && to.meta.auth) {
-        next("/login");
-      } else {
-        next();
-      }
-    });
-  });  
+router.beforeEach(async (to, from, next) => {
+  try {
+    await userAuthorized;
+
+    const store = useStore();
+
+    if (!store.user && to.meta.auth) {
+      next("/login");
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.error("Error during user authorization:", error);
+    next("/login");
+  }
+});
 
 export default router;

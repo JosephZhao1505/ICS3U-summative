@@ -5,7 +5,10 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/firebase";
 
 const store = useStore();
-let[firstName, lastName] = auth.currentUser.displayName.split(' ')
+let firstName = "", lastName = "";
+if (auth.currentUser && auth.currentUser.displayName) {
+  [firstName, lastName] = auth.currentUser.displayName.split(' ');
+}
 
 const logout = () => {
   store.user = null;
@@ -25,7 +28,7 @@ const logout = () => {
           <RouterLink to="/home" class="buttons">
             <img src="/homeuh.png" alt="Home">
           </RouterLink>
-          <RouterLink to="/genresearch" class = "buttons">
+          <RouterLink to="/genresearch" class="buttons">
             <img src="/imsorryuh.png" alt="Genres">
           </RouterLink>
         </div>
@@ -42,7 +45,7 @@ const logout = () => {
     </div>
     <div class="right">
       <template v-if="store.user !== null">
-        <RouterLink to="/cart" class="buttons" >
+        <RouterLink to="/cart" class="buttons">
           <img src="/cartuh.png" alt="Cart">
         </RouterLink>
         <RouterLink to="/settings" class="buttons">
