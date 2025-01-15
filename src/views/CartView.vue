@@ -9,6 +9,11 @@ const removeFromCart = (key) => {
     store.cart.delete(key);
     localStorage.setItem(`cart_${store.user.email}`, JSON.stringify(Object.fromEntries(store.cart)));
 };
+
+function Chegout() {
+    store.cart.clear();
+    localStorage.removeItem(`cart_${store.user.email}`);
+}
 </script>
 
 <template>
@@ -23,6 +28,7 @@ const removeFromCart = (key) => {
             </div>
         </div>
     </div>
+    <button @click="Chegout()">Cheg-out</button>
 </template>
 
 <style scoped>

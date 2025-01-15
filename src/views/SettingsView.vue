@@ -7,29 +7,37 @@ import { ref } from 'vue';
 
 const store = useStore();
 
-const firstName = ref(auth.currentUser.displayName.split(' ')[0] || '');
-const lastName = ref(auth.currentUser.displayName.split(' ')[1] || '');
+const firstNameChange = ref("");
+const lastNameChange = ref("");
+const passwordChange = ref("");
+let [firstName, lastName] = auth.currentUser.displayName.split(' ')
 
-const updateInfo = async () => {
-  try {
-    await updateProfile(auth.currentUser, {
-      displayName: `${firstName.value} ${lastName.value}`
-    });
-
-    alert('Information updated successfully!');
-  } catch (error) {
-    console.error('Error updating profile: ', error);
-    alert('Failed to update information.');
+async function updateInfo() {
+  if (firstNameChange.value.length > 0) {
+    firstName = firstNameChange.value;
+    await updateProfile(auth.currentUser, { displayName: `${firstName} ${lastName}` });
+    firstNameChange.value = "";
   }
-};
+  if (lastNameChange.value.length > 0) {
+    lastName = lastNameChange.value;
+    await updateProfile(auth.currentUser, { displayName: `${firstName} ${lastName}` });
+    lastNameChange.value = "";
+  }
+  if (passwordChange.value.length > 0) {
+    await updatePassword(auth.currentUser, passwordChange.value);
+    passwordChange.value = "";
+  }
+  location.reload();
+}
 </script>
 
 <template>
   <Header />
   <div class="form-container">
-    <form @click="updateInfo">
-      <input v-model="firstName" maxlength="20" placeholder="First Name" class="input-field" />
-      <input v-model="lastName" maxlength="20" placeholder="Last Name" class="input-field" />
+    <form @submit.prevent="updateInfo">
+      <input v-model="firstNameChange" maxlength="30" placeholder="First Name" class="input-field" />
+      <input v-model="lastNameChange" maxlength="30" placeholder="Last Name" class="input-field" />
+      <input v-model="passwordChange" type="password" maxlength="4096" placeholder="Password" class="input-field" />
       <button type="submit" class="button">Change</button>
     </form>
   </div>
