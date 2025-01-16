@@ -8,7 +8,7 @@ const route = useRoute();
 const store = useStore();
 
 const addToCart = () => {
-  store.cart.set(route.params.id, { title: response.data.original_title, url: response.data.poster_path })
+  store.cart.set(String(route.params.id), { title: response.data.original_title, url: response.data.poster_path })
   localStorage.setItem(`cart_${store.user.email}`, JSON.stringify(Object.fromEntries(store.cart)));
 }
 
@@ -39,7 +39,7 @@ console.log(response.data);
           <a :href="response.data.homepage" target="_blank">
             <button class="button">Official Movie Site</button>
           </a>
-          <button @click="addToCart()" class="button">{{ store.cart.has(route.params.id) ? 'Added' : 'Buy' }}</button>
+          <button @click="addToCart()" class="button">{{ store.cart.has(String(route.params.id)) ? 'Added' : 'Buy' }}</button>
         </div>
       </div>
     </div>

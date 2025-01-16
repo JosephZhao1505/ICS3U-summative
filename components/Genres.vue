@@ -21,6 +21,11 @@ function getMovieDetails(id) {
 onMounted(async () => {
   response.value = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&with_genres=${selectedGenre.value}`);
 })
+
+const addToCart = (movie) => {
+  store.cart.set(String(movie.id), { title: movie.title, url: movie.poster_path })
+  localStorage.setItem(`cart_${store.user.email}`, JSON.stringify(Object.fromEntries(store.cart)));
+}
 </script>
 
 <template>
@@ -35,8 +40,7 @@ onMounted(async () => {
         <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="Movie Poster" class="movie-poster" />
         <p class="movie-title">{{ movie.title }}</p>
         <button class="button" @click="getMovieDetails(movie.id)">Details</button>
-        <button @click="store.cart.set(movie.id, { title: movie.title, url: movie.poster_path })" class="button">{{
-          store.cart.has(movie.id) ? 'Added' : 'Buy' }}</button>
+        <button @click="addToCart(movie)" class="button">{{store.cart.has(String(movie.id)) ? 'Added' : 'Buy' }}</button>
       </div>
     </div>
   </div>

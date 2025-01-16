@@ -4,6 +4,7 @@ import { useStore } from '@/store';
 import { ref } from 'vue';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from '@/firebase';
+import Footer from '../../components/Footer.vue';
 
 const store = useStore();
 const router = useRouter();
@@ -49,6 +50,7 @@ const loginByGoogle = async () => {
     <button @click="loginByGoogle()" type="submit" class="button login">Login by Google</button>
   </div>
   <RouterLink to="/" class="cancelbutton">Cancel</RouterLink>
+  <Footer />
 </template>
 
 <style scoped>
