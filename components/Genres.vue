@@ -37,9 +37,12 @@ const addToCart = (movie) => {
     </select>
     <div v-if="response" class="movie-list">
       <div v-for="movie in response.data.results" :key="movie.id" class="movie-card">
-        <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="Movie Poster" class="movie-poster" />
+        <!-- Clickable movie poster for details -->
+        <div @click="getMovieDetails(movie.id)" class="movie-poster-container">
+          <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="Movie Poster" class="movie-poster" />
+        </div>
         <p class="movie-title">{{ movie.title }}</p>
-        <button class="button" @click="getMovieDetails(movie.id)">Details</button>
+        <!-- Buy button -->
         <button @click="addToCart(movie)" class="button">{{store.cart.has(String(movie.id)) ? 'Added' : 'Buy' }}</button>
       </div>
     </div>
@@ -93,10 +96,19 @@ select:focus {
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .movie-card:hover {
   transform: scale(1.05);
+}
+
+.movie-poster-container {
+  width: 100%;
+  cursor: pointer;
 }
 
 .movie-poster {
@@ -108,11 +120,31 @@ select:focus {
 .movie-title {
   padding: 10px;
   font-size: 16px;
-  text-align: center;
   color: #e0e0e0;
+  width: 100%;
 }
 
 .movie-title:hover {
-  color: #888;
+  color: #cc5140;
+}
+
+.button {
+  margin: 10px 0;
+  padding: 8px 15px;
+  font-size: 20px;
+  color: black;
+  background-color: gray;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #cc5140;
+}
+
+.button:active {
+  background-color: #cc5140;
 }
 </style>

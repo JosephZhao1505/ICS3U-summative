@@ -2,7 +2,7 @@
     <div class="ReasonsToJoin">
     <div class="Reasons">
       <h2>Unbeatable prices</h2>
-      <p>You can have access to millions of movies, TV shows and more!</p>
+      <p>You can have access to millions of movies, TV shows and more! FOR VERY LOW PRICES!!!!!</p>
     </div>
     <div class="Reasons">
       <h2>Downloading content is extremely storage friendly</h2>

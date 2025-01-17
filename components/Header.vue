@@ -29,7 +29,12 @@ const logout = () => {
             <img src="/homeuh.png" alt="Home">
           </RouterLink>
           <RouterLink to="/genresearch" class="buttons">
-            <img src="/imsorryuh.png" alt="Genres">
+            <div class="imgdropdown">
+              <img src="/imsorryuh.png" alt="Genres">
+              <div class="info-dropdown">
+                <h1>Genres</h1>
+              </div>
+            </div>
           </RouterLink>
         </div>
       </div>
@@ -121,5 +126,23 @@ const logout = () => {
 
 h1 {
   color: gray;
+}
+
+.imgdropdown {
+  display: flex;
+  align-items: center;
+}
+
+.info-dropdown {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 10px;
+}
+
+.imgdropdown:hover .info-dropdown {
+  display: block;
 }
 </style>
