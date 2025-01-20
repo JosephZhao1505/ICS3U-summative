@@ -8,7 +8,7 @@ import { RouterLink } from 'vue-router';
     <h1>Unlimited content whenever and wherever</h1>
     <h2>Bank account look like this? No problem! Join now to start watching your favourite content with as many pixels
       as . Prices start at $6.99.</h2>
-      <h1>Get Started</h1>
+      <h1>Get started by clicking the button below</h1>
     <RouterLink to="/register" class="signup">
       <img src="/signupuh.png" alt="Sign Up">
     </RouterLink>

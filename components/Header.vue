@@ -62,7 +62,7 @@ const logout = () => {
       </template>
       <template v-else>
         <RouterLink to="/login" class="buttons">
-          <img src="/signupuh.png" alt="Login">
+          <img src="/login.png" alt="Login">
         </RouterLink>
       </template>
     </div>

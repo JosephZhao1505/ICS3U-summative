@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import { useStore } from '../store';
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from '@/firebase';
-import Footer from '../../components/Footer.vue';
 
 const router = useRouter();
 const store = useStore();
@@ -64,7 +63,6 @@ async function registerByGoogle() {
     <button @click="registerByGoogle()" class="button register">Register by Google</button>
   </div>
   <RouterLink to="/" class="cancelbutton">Cancel</RouterLink>
-  <Footer />
 </template>
 
 <style scoped>
