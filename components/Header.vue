@@ -13,6 +13,7 @@ if (auth.currentUser && auth.currentUser.displayName) {
 const logout = () => {
   store.user = null;
   signOut(auth);
+  localStorage.removeItem('loginMethod')
   router.push(`/`);
 }
 </script>
@@ -26,8 +27,14 @@ const logout = () => {
         </RouterLink>
         <div class="views">
           <RouterLink to="/home" class="buttons">
-            <img src="/homeuh.png" alt="Home">
+            <div class="imgdropdown">
+              <img src="/homeuh.png" alt="Genres">
+              <div class="info-dropdown">
+                <h1>Home</h1>
+              </div>
+            </div>
           </RouterLink>
+          <br>
           <RouterLink to="/genresearch" class="buttons">
             <div class="imgdropdown">
               <img src="/imsorryuh.png" alt="Genres">

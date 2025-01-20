@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useStore } from '../store';
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from '@/firebase';
+import Footer from '../../components/Footer.vue';
 
 const router = useRouter();
 const store = useStore();
@@ -22,6 +23,7 @@ async function registerByEmail() {
       const user = (await createUserWithEmailAndPassword(auth, email.value, password.value)).user;
       await updateProfile(user, { displayName: `${firstName.value} ${lastName.value}` });
       store.user = user;
+      localStorage.setItem('loginMethod', 'email');
       router.push("/home");
     } catch (error) {
       alert("There was an error creating a user with email!");
@@ -60,9 +62,13 @@ async function registerByGoogle() {
       <input v-model="retypepassword" type="password" placeholder="Retype Password" class="input-field" required />
       <button type="submit" class="button signin">Sign Up</button>
     </form>
+    <br>
     <button @click="registerByGoogle()" class="button register">Register by Google</button>
   </div>
-  <RouterLink to="/" class="cancelbutton">Cancel</RouterLink>
+  <RouterLink to="/" class="cancelbutton">
+    <img src="/return.png" alt="Return">
+  </RouterLink>
+  <Footer />
 </template>
 
 <style scoped>
@@ -89,8 +95,8 @@ body {
 }
 
 .button,
-.cancelbutton {
-  background-color: #333;
+.cancelbutton img {
+  background-color: #444;
   color: #e0e0e0;
   border: none;
   padding: 10px 20px;
@@ -101,7 +107,7 @@ body {
 }
 
 .button:hover,
-.cancelbutton:hover {
+.cancelbutton img:hover {
   background-color: #cc5140;
 }
 
@@ -172,8 +178,31 @@ input::placeholder {
 }
 
 .cancelbutton {
-  position: absolute;
+  position: fixed;
   bottom: 20px;
   left: 20px;
+  background-color: #444;
+  color: #e0e0e0;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.cancelbutton img{
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #444;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  height: 50px;
+  width: 70px;
 }
 </style>

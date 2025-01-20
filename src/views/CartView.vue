@@ -11,8 +11,12 @@ const removeFromCart = (key) => {
 };
 
 function Checkout() {
-    store.cart.clear();
-    localStorage.removeItem(`cart_${store.user.email}`);
+    const proceed = window.confirm("Are you sure you want to proceed to checkout?");
+    if (proceed) {
+        store.cart.clear();
+        localStorage.removeItem(`cart_${store.user.email}`);
+        alert("Thanks for shopping at BrokeFlix, you will not be happy with your purchase")
+    }
 }
 </script>
 
@@ -20,6 +24,9 @@ function Checkout() {
     <Header />
     <div class="cart">
         <h1>Shopping Cart</h1>
+        <div v-for="([key, value]) in store.cart">
+            <button class="button checkout-button" @click="Checkout()">Checkout</button>
+        </div>
         <div class="item-list">
             <div v-for="([key, value]) in store.cart" :key="key" class="item-card">
                 <img :src="`https://image.tmdb.org/t/p/w500${value.url}`" class="item-poster" />
@@ -28,7 +35,9 @@ function Checkout() {
             </div>
         </div>
     </div>
-    <button class="button" @click="Checkout()">Checkout</button>
+    <div v-if="!store.cart.size">
+        <h2>Your cart is empty. Consider giving us your hard earned money.</h2>
+    </div>
 </template>
 
 <style scoped>
@@ -45,12 +54,22 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 h1 {
     font-size: 24px;
     color: black;
     margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.button.checkout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
 }
 
 .item-list {
@@ -58,6 +77,7 @@ h1 {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
     width: 100%;
+    margin-top: 20px;
 }
 
 .item-card {

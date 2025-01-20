@@ -4,6 +4,7 @@ import { useStore } from '@/store';
 import { ref } from 'vue';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from '@/firebase';
+import Footer from '../../components/Footer.vue';
 
 const store = useStore();
 const router = useRouter();
@@ -14,6 +15,7 @@ const loginByEmail = async () => {
   try {
     const user = (await signInWithEmailAndPassword(auth, email.value, password.value)).user;
     store.user = user;
+    localStorage.setItem('loginMethod', 'email');
     router.push("/home");
   } catch (error) {
     console.log(error);
@@ -43,12 +45,16 @@ const loginByGoogle = async () => {
     <h2>Login to Your Account</h2>
     <form @submit.prevent="loginByEmail()">
       <input type="email" v-model="email" placeholder="Email" class="input-field" required />
-      <input v-model:="password" type="password" placeholder="Password" class="input-field" required />
+      <input v-model="password" type="password" placeholder="Password" class="input-field" required />
       <button type="submit" class="button login">Login</button>
     </form>
+    <br>
     <button @click="loginByGoogle()" type="submit" class="button login">Login by Google</button>
   </div>
-  <RouterLink to="/" class="cancelbutton">Cancel</RouterLink>
+  <RouterLink to="/" class="cancelbutton">
+    <img src="/return.png" alt="Back">
+  </RouterLink>
+  <Footer />
 </template>
 
 <style scoped>
@@ -74,8 +80,8 @@ body {
   font-size: 24px;
 }
 
-.button, .cancelbutton {
-  background-color: #333;
+.button {
+  background-color: #444;
   color: #e0e0e0;
   border: none;
   padding: 10px 20px;
@@ -85,7 +91,7 @@ body {
   transition: background-color 0.3s;
 }
 
-.button:hover, .cancelbutton:hover {
+.button:hover, .cancelbutton img:hover {
   background-color: #cc5140;
 }
 
@@ -154,9 +160,18 @@ input::placeholder {
   font-weight: bold;
 }
 
-.cancelbutton {
-  position: absolute;
+.cancelbutton img{
+  position: fixed;
   bottom: 20px;
   left: 20px;
+  background-color: #444;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  height: 50px;
+  width: 70px;
 }
 </style>

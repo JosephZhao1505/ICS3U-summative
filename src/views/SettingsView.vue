@@ -13,41 +13,51 @@ const passwordChange = ref("");
 let [firstName, lastName] = auth.currentUser.displayName.split(' ')
 
 async function updateInfo() {
-  if (firstNameChange.value.length > 0) {
-    firstName = firstNameChange.value;
-    await updateProfile(auth.currentUser, { displayName: `${firstName} ${lastName}` });
-    firstNameChange.value = "";
+  const proceed = window.confirm("Are you sure you want to apply these settings?");
+  if (proceed) {
+    if (firstNameChange.value.length > 0) {
+      firstName = firstNameChange.value;
+      await updateProfile(auth.currentUser, { displayName: `${firstName} ${lastName}` });
+      firstNameChange.value = "";
+    }
+    if (lastNameChange.value.length > 0) {
+      lastName = lastNameChange.value;
+      await updateProfile(auth.currentUser, { displayName: `${firstName} ${lastName}` });
+      lastNameChange.value = "";
+    }
+    if (passwordChange.value.length > 0) {
+      await updatePassword(auth.currentUser, passwordChange.value);
+      passwordChange.value = "";
+    }
+    location.reload();
+    alert("Successfully changed settings")
   }
-  if (lastNameChange.value.length > 0) {
-    lastName = lastNameChange.value;
-    await updateProfile(auth.currentUser, { displayName: `${firstName} ${lastName}` });
-    lastNameChange.value = "";
-  }
-  if (passwordChange.value.length > 0) {
-    await updatePassword(auth.currentUser, passwordChange.value);
-    passwordChange.value = "";
-  }
-  location.reload();
 }
+
+const loginMethod = localStorage.getItem('loginMethod');
 </script>
 
 <template>
   <Header />
-  <div class="form-container">
+  <div v-if="loginMethod === 'email'" class="form-container">
     <form @submit.prevent="updateInfo">
       <input v-model="firstNameChange" maxlength="30" placeholder="First Name" class="input-field" />
       <input v-model="lastNameChange" maxlength="30" placeholder="Last Name" class="input-field" />
       <input v-model="passwordChange" type="password" maxlength="4096" placeholder="Password" class="input-field" />
       <button type="submit" class="button">Change</button>
     </form>
+    <div class="currentinfo">
+      <h2>Current Info</h2>
+      <p>First Name: {{ firstName }}</p>
+      <p>Last Name: {{ lastName }}</p>
+      <p>Email: {{ auth.currentUser.email }}</p>
+      <p>Password: **********</p>
+    </div>
   </div>
 
-  <div class="currentinfo">
-    <h2>Current Info</h2>
-    <p>First Name: {{ firstName }}</p>
-    <p>Last Name: {{ lastName }}</p>
-    <p>Email: {{ auth.currentUser.email }}</p>
-    <p>Password: **********</p>
+  <div v-if="loginMethod !== 'email'">
+    <h1>Settings are not available for Google login users. Please refer to the security tab in your account management settings.</h1>
+    <img src="/g-security.png" alt="security">
   </div>
 </template>
 
